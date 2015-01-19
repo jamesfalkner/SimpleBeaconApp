@@ -1,0 +1,9 @@
+<Alloy>
+	<Window class="container">
+		<View id="buttonContainer">
+			<Button id="startButton" onClick="start">Start</Button>
+			<Button id="stopButton" onClick="stop">Stop</Button>
+		</View>
+		<TextArea id="log" editable="false" />	
+	</Window>
+</Alloy>

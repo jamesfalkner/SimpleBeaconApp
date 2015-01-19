@@ -1,0 +1,40 @@
+".container": {
+	backgroundColor: "white",
+	layout: "vertical"
+}
+
+"Button": {
+	font: {
+		fontSize: '18dp'
+	}
+}
+
+"#buttonContainer": {
+	height: "10%",
+	width: Ti.UI.FILL
+}
+
+"#startButton": {
+	left: '5%',
+	bottom: '5%'
+}
+
+"#stopButton": {
+	right: '5%',
+	bottom: '5%'
+}
+
+"#log": {
+	width: '90%',
+	height: '80%',
+	color: 'black',
+	backgroundColor: '#dddddd',
+	font: {
+		fontFamily: 'monospace'
+	},
+	borderWidth: 2,
+	borderColor: '#bbb',
+	borderRadius: 5,
+	editable: false,
+	enabled: false
+}
