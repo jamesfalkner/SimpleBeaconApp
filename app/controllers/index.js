@@ -5,7 +5,7 @@ var DDL_URL = 'http://training-XXXXXX.liferay.com/api/jsonws/skinny-web.skinny/g
 var DDL_RECORD_SET_ID = 'XXXXX';
 var FETCH_FROM_LIFERAY = false;
 
-var UUID = '00001971-0003-0005-0000-000000000000';
+var UUID = 'B9407F30-F5F8-466E-AFF9-25556B57FE6D';
 var REGION_NAME = "Sample Region";
 var OS_VERSION = Ti.Platform.version.split('.');
 var IS_IOS7_OR_GREATER = (OS_VERSION && OS_VERSION[0] && parseInt(OS_VERSION[0], 10) >= 7);
