@@ -51,6 +51,13 @@ function handleRegionExit(e) {
 
 function handleRegionDeterminedState(e) {
     log("blue", "STATE: " + e.regionState + ' ' + e.identifier);
+    if (e.regionState === 'inside') {
+        TiBeacons.startRangingForBeacons({
+            identifier : e.identifier,
+            uuid : UUID
+        });
+
+    }
 }
 function handleProximityEvent(e) {
         log("orange", "PROX: " + e.proximity + ' ' + e.uuid + '/' + e.major + '/' + e.minor);
@@ -127,4 +134,3 @@ function stop(e) {
 }
 
 $.index.open();
-
