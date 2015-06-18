@@ -1,15 +1,16 @@
 var TiBeacons = null;
 
 // Change these to change where beacon config is fetched from
-var DDL_URL = 'http://training-XXXXXX.liferay.com/api/jsonws/skinny-web.skinny/get-skinny-ddl-records';
-var DDL_RECORD_SET_ID = 'XXXXX';
-var FETCH_FROM_LIFERAY = false;
+var DDL_URL = 'http://192.168.1.220:8080/api/jsonws/skinny-web.skinny/get-skinny-ddl-records';
+var DDL_RECORD_SET_ID = '21459';
+var FETCH_FROM_LIFERAY = true;
 
 var UUID = 'B9407F30-F5F8-466E-AFF9-25556B57FE6D';
 var REGION_NAME = "Sample Region";
 var OS_VERSION = Ti.Platform.version.split('.');
-var IS_IOS7_OR_GREATER = (OS_VERSION && OS_VERSION[0] && parseInt(OS_VERSION[0], 10) >= 7);
-var IS_IOS8_OR_GREATER = (OS_VERSION && OS_VERSION[0] && parseInt(OS_VERSION[0], 10) >= 8);
+var IS_IOS = (Ti.Platform.osname == 'iphone' || Ti.Platform.osname == 'ipad');
+var IS_IOS7_OR_GREATER = (IS_IOS && OS_VERSION && OS_VERSION[0] && parseInt(OS_VERSION[0], 10) >= 7);
+var IS_IOS8_OR_GREATER = (IS_IOS && OS_VERSION && OS_VERSION[0] && parseInt(OS_VERSION[0], 10) >= 8);
 var line = 1;
 
 if (Ti.Platform.name === 'android' && Ti.Platform.Android.API_LEVEL >= 18) {
@@ -21,6 +22,8 @@ if (Ti.Platform.name === 'android' && Ti.Platform.Android.API_LEVEL >= 18) {
 } else if (Ti.Platform.name === 'iPhone OS') {
     if (IS_IOS7_OR_GREATER) {
         TiBeacons = require('org.beuckman.tibeacons');
+    } else {
+    	    $.log.value = "Sorry, beacons only supported on iOS 7 or later!";
     }
 } else {
     $.log.value = "Sorry, beacons not supported on this platform.";
@@ -28,11 +31,13 @@ if (Ti.Platform.name === 'android' && Ti.Platform.Android.API_LEVEL >= 18) {
 
 function log(color, msg) {
     $.log.borderColor = color;
+    $.log.backgroundColor = color;
     $.log.value = ($.log.value + '\n' + line + ' ' + msg);
     line++;
     $.log.setSelection($.log.value.length, $.log.value.length);
     setTimeout(function() {
         $.log.borderColor = '#bbb';
+        $.log.backgroundColor = '#dddddd';
     }, 500);
 }
 function handleRegionEnter(e) {
@@ -89,12 +94,11 @@ function start(e) {
     if (TiBeacons) {
         $.log.value = "Started at " + new Date() + "\n-------------------------------";
         line = 1;
-        if (IS_IOS8_OR_GREATER) {
-            // force popup on ios8
-            Ti.Geolocation.setPurpose(L('GEO_PERMISSION_PURPOSE'));
-            Ti.Geolocation.getCurrentPosition(function(result) {});
-        }
-        
+        if (IS_IOS) {
+	        Ti.Geolocation.setPurpose(L('GEO_PERMISSION_PURPOSE'));
+	        Ti.Geolocation.getCurrentPosition(function(result) {});
+		}
+		    
         TiBeacons.addEventListener("enteredRegion", handleRegionEnter);
         TiBeacons.addEventListener("exitedRegion", handleRegionExit);
         TiBeacons.addEventListener("determinedRegionState", handleRegionDeterminedState);
@@ -103,6 +107,7 @@ function start(e) {
     
     
         if (!FETCH_FROM_LIFERAY) {
+           log("orange", "Using hard-coded region: " + REGION_NAME + "/" + UUID);
             TiBeacons.startMonitoringForRegion({
                 identifier: REGION_NAME,
                 uuid: UUID        
@@ -111,7 +116,7 @@ function start(e) {
             getRegionFromLiferay(function(region) {
                REGION_NAME = region.title;
                UUID = region.proximity_uuid;
-               log("red", "Got region from Liferay: " + JSON.stringify(region));
+               log("green", "Got region from Liferay: " + JSON.stringify(region));
                TiBeacons.startMonitoringForRegion({
                    uuid: UUID,
                    identifier: REGION_NAME
@@ -124,6 +129,7 @@ function start(e) {
 }
 
 function stop(e) {
+    log("orange", "Stopped at " + new Date() + "\n-------------------------------");
     if (TiBeacons) {
         TiBeacons.removeEventListener("enteredRegion", handleRegionEnter);
         TiBeacons.removeEventListener("exitedRegion", handleRegionExit);

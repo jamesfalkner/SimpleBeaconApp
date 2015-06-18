@@ -11,14 +11,17 @@ function loadDDL(url, o, tries) {
         onSuccess : function(result) {
             var resArray = [];
 
-            result.forEach(function(el) {
-                if (el.dynamicElements) {
-                    resArray.push(el.dynamicElements);
-                }
-            });
+            if (Array.isArray(result)) {
+
+	            result.forEach(function(el) {
+	                if (el.dynamicElements) {
+	                    resArray.push(el.dynamicElements);
+	                }
+	            });
+           }
             if (resArray === null) {
                 if (o.error) {
-                    o.error("not sure what went wrong");
+                    o.error("DDL definition incorrect or missing skinny-web plugin: " + JSON.stringify(result));
                 }
             } else {
                 if (o.success) {
@@ -33,7 +36,7 @@ function loadDDL(url, o, tries) {
                 return;
             } else {
                 if (o.error) {
-                    o.error("Tried 3 times, and failed, sorry");
+                    o.error("Tried 3 times to retrieve DDL from " + url + " and failed, sorry");
                 }
                 return;
             }
