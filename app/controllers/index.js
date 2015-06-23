@@ -1,9 +1,9 @@
 var TiBeacons = null;
 
 // Change these to change where beacon config is fetched from
-var DDL_URL = 'http://192.168.1.220:8080/api/jsonws/skinny-web.skinny/get-skinny-ddl-records';
-var DDL_RECORD_SET_ID = '21459';
-var FETCH_FROM_LIFERAY = true;
+var DDL_URL = 'http://training-21.liferay.com/api/jsonws/skinny-web.skinny/get-skinny-ddl-records';
+var DDL_RECORD_SET_ID = '53815';
+var FETCH_FROM_LIFERAY = false;
 
 var UUID = 'B9407F30-F5F8-466E-AFF9-25556B57FE6D';
 var REGION_NAME = "Sample Region";
